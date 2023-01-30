@@ -1,3 +1,5 @@
+import { getCountries } from 'libphonenumber-js'
+
 function save_options() {
   var selectedCountry = document.getElementById('country').value;
   console.log("fffff", selectedCountry);
@@ -14,6 +16,13 @@ function save_options() {
 }
 
 function restore_options() {
+  const countrySelector = document.getElementById('country');
+  getCountries().forEach( c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.innerHTML = c;
+    countrySelector.appendChild(opt);
+  });
   chrome.storage.sync.get({
     country: 'IL',
   }, function(items) {
