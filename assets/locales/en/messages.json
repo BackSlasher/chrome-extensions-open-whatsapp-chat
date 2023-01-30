@@ -1,0 +1,11 @@
+{
+    "appName": {
+        "message": "Copy WhatsApp Link"
+    },
+    "appShortName": {
+        "message": "Copy WhatsApp Link"
+    },
+    "appDescription": {
+        "message": "Select a phone number to create a WhatsApp link to it"
+    }
+}
