@@ -1,23 +1,21 @@
-import { parsePhoneNumberWithError, ParseError } from 'libphonenumber-js'
-
+import { parsePhoneNumberWithError } from 'libphonenumber-js';
 
 async function getWhatsAppLink(text) {
-  const countryStruct = await chrome.storage.sync.get("country");
-  const country = countryStruct ? countryStruct.country : "IL";
-  console.log("aaaa", country);
+  const countryStruct = await chrome.storage.sync.get('country');
+  const country = countryStruct ? countryStruct.country : 'IL';
   const numberObject = parsePhoneNumberWithError(text, country);
-  const number = numberObject.formatInternational().replace(/\D/g, "");
-  const link=`https://wa.me/${number}`;
+  const number = numberObject.formatInternational().replace(/\D/g, '');
+  const link = `https://wa.me/${number}`;
   return link;
 }
 
 function notify(title, message) {
-    chrome.notifications.create({
-      iconUrl: "assets/img/128x128.png",
-      type: "basic",
-      title,
-      message,
-    });
+  chrome.notifications.create({
+    iconUrl: 'assets/img/128x128.png',
+    type: 'basic',
+    title,
+    message,
+  });
 }
 
 function reportError(exception) {
@@ -31,13 +29,16 @@ async function copyLink(text, tab) {
   // Format as a whatsapp link
   const link = await getWhatsAppLink(text);
   // Ask the content.js in the tab to copy the text
-  chrome.tabs.sendMessage(tab.id,
-      {
-          message: "copyText",
-          textToCopy: link,
-      }, function(response) {});
+  chrome.tabs.sendMessage(
+    tab.id,
+    {
+      message: 'copyText',
+      textToCopy: link,
+    },
+    () => {},
+  );
   notify(
-    "Copied WhatsApp link",
+    'Copied WhatsApp link',
     link,
   );
 }
@@ -53,19 +54,18 @@ async function openTab(text, tab) {
 async function processClick(info, tab) {
   const selection = info.selectionText;
   const source = info.menuItemId;
-  try{
-    switch(source) {
-      case "copyLink": 
+  try {
+    switch (source) {
+      case 'copyLink':
         await copyLink(selection, tab);
         break;
-      case "openChat": 
+      case 'openChat':
         await openTab(selection, tab);
         break;
       default:
         throw new Error(`Uknnown source tab ${source}`);
     }
-  }
-  catch (e) {
+  } catch (e) {
     reportError(e);
   }
 }
@@ -85,7 +85,7 @@ function setUpContextMenus() {
   });
 }
 
-chrome.runtime.onInstalled.addListener(function() {
+chrome.runtime.onInstalled.addListener(() => {
   setUpContextMenus();
 });
 

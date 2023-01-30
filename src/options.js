@@ -1,23 +1,22 @@
-import { getCountries } from 'libphonenumber-js'
+import { getCountries } from 'libphonenumber-js';
 
-function save_options() {
-  var selectedCountry = document.getElementById('country').value;
-  console.log("fffff", selectedCountry);
+function saveOptions() {
+  const selectedCountry = document.getElementById('country').value;
   chrome.storage.sync.set({
     country: selectedCountry,
-  }, function() {
+  }, () => {
     // Update status to let user know options were saved.
-    var status = document.getElementById('status');
+    const status = document.getElementById('status');
     status.textContent = 'Options saved.';
-    setTimeout(function() {
+    setTimeout(() => {
       status.textContent = '';
     }, 750);
   });
 }
 
-function restore_options() {
+function restoreOptions() {
   const countrySelector = document.getElementById('country');
-  getCountries().forEach( c => {
+  getCountries().forEach((c) => {
     const opt = document.createElement('option');
     opt.value = c;
     opt.innerHTML = c;
@@ -25,10 +24,12 @@ function restore_options() {
   });
   chrome.storage.sync.get({
     country: 'IL',
-  }, function(items) {
+  }, (items) => {
     document.getElementById('country').value = items.country;
   });
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-    save_options);
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.getElementById('save').addEventListener(
+  'click',
+  saveOptions,
+);
