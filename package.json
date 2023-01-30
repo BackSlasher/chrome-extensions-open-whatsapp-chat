@@ -39,6 +39,7 @@
         }
     },
     "xtbuild": {
+        "html": "./src/**/*.html",
         "js_bundles": [
             {
                 "name": "background",
@@ -47,6 +48,10 @@
             {
                 "name": "content",
                 "src": "./src/content.js"
+            },
+            {
+                "name": "options",
+                "src": "./src/options.js"
             }
         ]
     },
