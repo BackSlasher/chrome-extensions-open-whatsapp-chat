@@ -1,14 +1,15 @@
+import parsePhoneNumber from 'libphonenumber-js'
+
 function copyWhatsAppLink(text, tab) {
   // Format as a whatsapp link
-  // TODO ensure number format is full
-  const number = text;
-  const canonicalNumber = number.replace(/\D/, "");
-  https://wa.me/972523214583
+  const numberObject = parsePhoneNumber(text,'IL');
+  const number = numberObject.formatInternational().replace(/\D/g, "");
+  const link=`https://wa.me/${number}`;
   // Ask the content.js in the tab to copy the text
   chrome.tabs.sendMessage(tab.id,
       {
           message: "copyText",
-          textToCopy: text,
+          textToCopy: link,
       }, function(response) {})
 }
 

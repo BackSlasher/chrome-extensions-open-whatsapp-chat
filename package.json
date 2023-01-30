@@ -49,5 +49,8 @@
                 "src": "./src/content.js"
             }
         ]
+    },
+    "dependencies": {
+        "libphonenumber-js": "^1.10.18"
     }
 }
