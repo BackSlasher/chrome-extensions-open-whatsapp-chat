@@ -1,8 +1,13 @@
 import { parsePhoneNumberWithError } from 'libphonenumber-js';
 
+// To be injected to the active tab
+function contentCopy(text) {
+  navigator.clipboard.writeText(text);
+}
+
 async function getWhatsAppLink(text) {
   const countryStruct = await chrome.storage.sync.get('country');
-  const country = countryStruct ? countryStruct.country : 'IL';
+  const country = countryStruct.country || 'IL';
   const numberObject = parsePhoneNumberWithError(text, country);
   const number = numberObject.formatInternational().replace(/\D/g, '');
   const link = `https://wa.me/${number}`;
@@ -28,15 +33,11 @@ function reportError(exception) {
 async function copyLink(text, tab) {
   // Format as a whatsapp link
   const link = await getWhatsAppLink(text);
-  // Ask the content.js in the tab to copy the text
-  chrome.tabs.sendMessage(
-    tab.id,
-    {
-      message: 'copyText',
-      textToCopy: link,
-    },
-    () => {},
-  );
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: contentCopy,
+    args: [link],
+  });
   notify(
     'Copied WhatsApp link',
     link,
