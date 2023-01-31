@@ -4,7 +4,6 @@
     "description": "__MSG_appDescription__",
     "homepage_url": "http://chrome.google.com/webstore",
     "version": "0.0.1",
-    "version_name": "0.0.1",
     "manifest_version": 3,
     "default_locale": "en",
     "minimum_chrome_version": "88",
@@ -20,8 +19,21 @@
     "icons": {
         "128": "assets/img/128x128.png"
     },
-    "background": {
-        "service_worker": "background.js"
+    "firefox": {
+      "background": {
+        "scripts": ["background.js"]
+      },
+      "browser_specific_settings": {
+        "gecko": {
+          "id": "open-whatsapp-chat@backslasher.net"
+        }
+      }
+    },
+    "chrome": {
+      "version_name": "0.0.1",
+      "background": {
+          "service_worker": "background.js"
+      }
     },
     "action": {
         "default_icon": {

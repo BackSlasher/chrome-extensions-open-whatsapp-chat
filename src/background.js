@@ -1,7 +1,9 @@
 import { parsePhoneNumberWithError } from 'libphonenumber-js';
 
+const brow = chrome || browser;
+
 async function getWhatsAppLink(text) {
-  const countryStruct = await chrome.storage.sync.get('country');
+  const countryStruct = await brow.storage.sync.get('country');
   const country = countryStruct.country || 'IL';
   const numberObject = parsePhoneNumberWithError(text, country);
   const number = numberObject.formatInternational().replace(/\D/g, '');
@@ -10,7 +12,7 @@ async function getWhatsAppLink(text) {
 }
 
 function notify(title, message) {
-  chrome.notifications.create({
+  brow.notifications.create({
     iconUrl: 'assets/img/128x128.png',
     type: 'basic',
     title,
@@ -27,7 +29,7 @@ function reportError(exception) {
 
 async function openChat(text, tab) {
   const link = await getWhatsAppLink(text);
-  chrome.tabs.create({
+  brow.tabs.create({
     openerTabId: tab.id,
     url: link,
   });
@@ -50,7 +52,7 @@ async function processClick(info, tab) {
 }
 
 function setUpContextMenus() {
-  chrome.contextMenus.create({
+  brow.contextMenus.create({
     title: 'Open WhatsApp Chat',
     type: 'normal',
     id: 'openChat',
@@ -58,8 +60,14 @@ function setUpContextMenus() {
   });
 }
 
-chrome.runtime.onInstalled.addListener(() => {
-  setUpContextMenus();
-});
+const isFirefox = !chrome;
 
-chrome.contextMenus.onClicked.addListener(processClick);
+if (isFirefox) {
+  setUpContextMenus();
+  browser.contextMenus.onClicked.addListener(processClick);
+} else {
+  chrome.runtime.onInstalled.addListener(() => {
+    setUpContextMenus();
+  });
+  chrome.contextMenus.onClicked.addListener(processClick);
+}
