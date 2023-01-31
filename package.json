@@ -1,12 +1,12 @@
 {
-    "name": "copy-whatsapp-link",
-    "description": "Select a phone number to create a WhatsApp link to it",
+    "name": "open-whatsapp-chat",
+    "description": "Select a phone number to start a WhatsApp chat with it",
     "version": "0.0.1",
     "homepage": "http://chrome.google.com/webstore",
-    "author": "ENTER YOUR NAME HERE",
+    "author": "BackSlasher",
     "repository": {
         "type": "git",
-        "url": "ENTER GIT REPO URL"
+        "url": "https://github.com/BackSlasher/chrome-extensions-open-whatsapp-chat"
     },
     "scripts": {
         "start": "xt-build -e dev -w",

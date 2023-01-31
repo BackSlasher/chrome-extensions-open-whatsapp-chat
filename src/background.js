@@ -1,16 +1,11 @@
 import { parsePhoneNumberWithError } from 'libphonenumber-js';
 
-// To be injected to the active tab
-function contentCopy(text) {
-  navigator.clipboard.writeText(text);
-}
-
 async function getWhatsAppLink(text) {
   const countryStruct = await chrome.storage.sync.get('country');
   const country = countryStruct.country || 'IL';
   const numberObject = parsePhoneNumberWithError(text, country);
   const number = numberObject.formatInternational().replace(/\D/g, '');
-  const link = `https://wa.me/${number}`;
+  const link = `https://api.whatsapp.com/send?phone=${number}`;
   return link;
 }
 
@@ -30,21 +25,7 @@ function reportError(exception) {
   );
 }
 
-async function copyLink(text, tab) {
-  // Format as a whatsapp link
-  const link = await getWhatsAppLink(text);
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: contentCopy,
-    args: [link],
-  });
-  notify(
-    'Copied WhatsApp link',
-    link,
-  );
-}
-
-async function openTab(text, tab) {
+async function openChat(text, tab) {
   const link = await getWhatsAppLink(text);
   chrome.tabs.create({
     openerTabId: tab.id,
@@ -57,14 +38,11 @@ async function processClick(info, tab) {
   const source = info.menuItemId;
   try {
     switch (source) {
-      case 'copyLink':
-        await copyLink(selection, tab);
-        break;
       case 'openChat':
-        await openTab(selection, tab);
+        await openChat(selection, tab);
         break;
       default:
-        throw new Error(`Uknnown source tab ${source}`);
+        throw new Error(`Uknnown action ${source}`);
     }
   } catch (e) {
     reportError(e);
@@ -72,12 +50,6 @@ async function processClick(info, tab) {
 }
 
 function setUpContextMenus() {
-  chrome.contextMenus.create({
-    title: 'Copy WhatsApp Link',
-    type: 'normal',
-    id: 'copyLink',
-    contexts: ['selection'],
-  });
   chrome.contextMenus.create({
     title: 'Open WhatsApp Chat',
     type: 'normal',

@@ -9,10 +9,9 @@
     "default_locale": "en",
     "minimum_chrome_version": "88",
     "permissions": [
-      "contextMenus", "clipboardWrite","storage",
-      "notifications",
-      "activeTab",
-      "scripting"
+      "contextMenus",
+      "storage",
+      "notifications"
     ],
     "options_ui": {
       "page": "options.html",
