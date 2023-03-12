@@ -14,11 +14,6 @@ jobs:
       - id: run
         run: |
           echo "::set-output name=version::$(jq -r .version package.json)"
-          CHANGE_LOG="$(git log --oneline --decorate=no "${{ github.event.before }}"..)"
-          CHANGE_LOG="${CHANGE_LOG//'%'/'%25'}"
-          CHANGE_LOG="${CHANGE_LOG//$'\n'/'%0A'}"
-          CHANGE_LOG="${CHANGE_LOG//$'\r'/'%0D'}"
-          echo "::set-output name=change_log::$CHANGE_LOG"
       - uses: "marvinpinto/action-automatic-releases@latest"
         name: create_release
         id: create_release
