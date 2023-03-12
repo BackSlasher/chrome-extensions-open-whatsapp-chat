@@ -23,8 +23,8 @@ jobs:
         uses: actions/create-release@v1
         id: release
         with:
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
           release_name: ${{ steps.run.outputs.version }}
           tag_name: ${{ steps.run.outputs.version }}
           body_path: ${{ steps.run.outputs.changelog }}
