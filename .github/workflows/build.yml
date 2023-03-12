@@ -1,0 +1,15 @@
+on:
+  push:
+
+name: Create Release
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: prereqs
+        run: npm install --dev
+      - name: build firefox
+        run: npm run build:firefox
+      - name: build chrome
+        run: npm run build
