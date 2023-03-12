@@ -19,17 +19,13 @@ jobs:
           CHANGE_LOG="${CHANGE_LOG//$'\n'/'%0A'}"
           CHANGE_LOG="${CHANGE_LOG//$'\r'/'%0D'}"
           echo "::set-output name=change_log::$CHANGE_LOG"
-      - name: release
-        uses: actions/create-release@v1
-        id: release
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        name: release
         with:
-          draft: true
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
           prerelease: true
-          release_name: ${{ steps.run.outputs.version }}
-          tag_name: ${{ steps.run.outputs.version }}
-          body_path: ${{ steps.run.outputs.changelog }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          title: "Development Build"
       - name: prereqs
         run: npm install --dev
       - name: build firefox
