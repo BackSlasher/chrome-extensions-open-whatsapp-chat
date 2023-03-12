@@ -20,7 +20,7 @@ jobs:
           CHANGE_LOG="${CHANGE_LOG//$'\r'/'%0D'}"
           echo "::set-output name=change_log::$CHANGE_LOG"
       - uses: "marvinpinto/action-automatic-releases@latest"
-        name: release
+        name: create_release
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"
           automatic_release_tag: "latest"
