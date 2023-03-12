@@ -1,0 +1,55 @@
+on:
+  push:
+    branches:
+      - 'release'
+
+name: Create Release
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    outputs:1
+    steps:
+      - uses: actions/checkout@v3
+      - id: run
+        run: |
+        echo "::set-output name=version::$(jq -r .version package.json)"
+        CHANGE_LOG="$(git log --oneline --decorate=no "${{ github.event.before }}"..)"
+        CHANGE_LOG="${CHANGE_LOG//'%'/'%25'}"
+        CHANGE_LOG="${CHANGE_LOG//$'\n'/'%0A'}"
+        CHANGE_LOG="${CHANGE_LOG//$'\r'/'%0D'}"
+        echo "::set-output name=change_log::$CHANGE_LOG"
+      - name: release
+        uses: actions/create-release@v1
+	id: release
+	with:
+	  draft: false
+	  prerelease: false
+	  release_name: ${{ steps.run.outputs.version }}
+	  tag_name: ${{ steps.run.outputs.version }}
+	  body_path: ${{ steps.run.outputs.changelog }}
+	    env:
+	      GITHUB_TOKEN: ${{ github.token }}
+      - name: prereqs
+        run: npm install --dev
+      - name: build firefox
+        run: npm run build:firefox
+      - name: upload firefox
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release.zip
+          asset_name: firefox.zip
+          asset_content_type: application/gzip
+      - name: build chrome
+        run: npm run build
+      - name: upload chrome
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release.zip
+          asset_name: chrome.zip
+          asset_content_type: application/gzip
