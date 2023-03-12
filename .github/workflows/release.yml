@@ -39,7 +39,7 @@ jobs:
           asset_name: firefox.zip
           asset_content_type: application/gzip
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: build chrome
         run: npm run build
       - name: upload chrome
@@ -50,4 +50,4 @@ jobs:
           asset_name: chrome.zip
           asset_content_type: application/gzip
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
