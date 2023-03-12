@@ -24,9 +24,10 @@ jobs:
         id: create_release
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
+          automatic_release_tag: "v${{ steps.run.outputs.version }}"
+          prerelease: false
+          title: "v${{ steps.run.outputs.version }}"
+
       - name: prereqs
         run: npm install --dev
       - name: build firefox
