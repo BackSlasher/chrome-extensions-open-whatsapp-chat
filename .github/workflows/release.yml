@@ -11,23 +11,23 @@ jobs:
       - uses: actions/checkout@v3
       - id: run
         run: |
-        echo "::set-output name=version::$(jq -r .version package.json)"
-        CHANGE_LOG="$(git log --oneline --decorate=no "${{ github.event.before }}"..)"
-        CHANGE_LOG="${CHANGE_LOG//'%'/'%25'}"
-        CHANGE_LOG="${CHANGE_LOG//$'\n'/'%0A'}"
-        CHANGE_LOG="${CHANGE_LOG//$'\r'/'%0D'}"
-        echo "::set-output name=change_log::$CHANGE_LOG"
+          echo "::set-output name=version::$(jq -r .version package.json)"
+          CHANGE_LOG="$(git log --oneline --decorate=no "${{ github.event.before }}"..)"
+          CHANGE_LOG="${CHANGE_LOG//'%'/'%25'}"
+          CHANGE_LOG="${CHANGE_LOG//$'\n'/'%0A'}"
+          CHANGE_LOG="${CHANGE_LOG//$'\r'/'%0D'}"
+          echo "::set-output name=change_log::$CHANGE_LOG"
       - name: release
         uses: actions/create-release@v1
-	id: release
-	with:
-	  draft: false
-	  prerelease: false
-	  release_name: ${{ steps.run.outputs.version }}
-	  tag_name: ${{ steps.run.outputs.version }}
-	  body_path: ${{ steps.run.outputs.changelog }}
-	    env:
-	      GITHUB_TOKEN: ${{ github.token }}
+        id: release
+        with:
+        draft: false
+        prerelease: false
+        release_name: ${{ steps.run.outputs.version }}
+        tag_name: ${{ steps.run.outputs.version }}
+        body_path: ${{ steps.run.outputs.changelog }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: prereqs
         run: npm install --dev
       - name: build firefox
