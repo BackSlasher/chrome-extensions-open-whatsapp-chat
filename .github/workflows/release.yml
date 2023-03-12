@@ -24,11 +24,11 @@ jobs:
         id: create_release
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"
-          automatic_release_tag: "v${{ steps.run.outputs.version }}"
+          automatic_release_tag: "${{ steps.run.outputs.version }}"
           prerelease: false
-          title: "v${{ steps.run.outputs.version }}"
+          title: "${{ steps.run.outputs.version }}"
       - name: Ensure tag doesn't exist
-        run: '! git tag -l v${{ steps.run.outputs.version}} | grep -q .'
+        run: '! git tag -l ${{ steps.run.outputs.version}} | grep -q .'
       - name: prereqs
         run: npm install --dev
       - name: build firefox
