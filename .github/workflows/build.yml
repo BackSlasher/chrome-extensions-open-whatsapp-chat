@@ -1,7 +1,7 @@
 on:
   push:
 
-name: Create Release
+name: Build
 jobs:
   create_release:
     runs-on: ubuntu-latest
