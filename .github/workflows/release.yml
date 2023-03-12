@@ -8,15 +8,13 @@ jobs:
   create_release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - uses: "marvinpinto/action-automatic-releases@latest"
         name: create_release
         id: create_release
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"
           prerelease: false
+      - uses: actions/checkout@v3
       - name: prereqs
         run: npm install --dev
       - name: build firefox
