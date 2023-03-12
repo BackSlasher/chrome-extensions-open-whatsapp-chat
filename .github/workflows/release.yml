@@ -27,7 +27,8 @@ jobs:
           automatic_release_tag: "v${{ steps.run.outputs.version }}"
           prerelease: false
           title: "v${{ steps.run.outputs.version }}"
-
+      - name: Ensure tag doesn't exist
+        run: ! git tag -l v${{ steps.run.outputs.version}} | grep -q .
       - name: prereqs
         run: npm install --dev
       - name: build firefox
