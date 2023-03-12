@@ -1,7 +1,7 @@
 on:
   push:
-    branches:
-      - 'release'
+    tags:
+      - "v*"
 
 name: Create Release
 jobs:
@@ -11,19 +11,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - id: run
-        run: |
-          echo "::set-output name=version::$(jq -r .version package.json)"
       - uses: "marvinpinto/action-automatic-releases@latest"
         name: create_release
         id: create_release
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"
-          automatic_release_tag: "${{ steps.run.outputs.version }}"
           prerelease: false
-          title: "${{ steps.run.outputs.version }}"
-      - name: Ensure tag doesn't exist
-        run: '! git tag -l ${{ steps.run.outputs.version}} | grep -q .'
       - name: prereqs
         run: npm install --dev
       - name: build firefox
