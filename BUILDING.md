@@ -37,3 +37,8 @@ For CLI instructions see [User Guide &rarr;](https://oss.mobilefirst.me/extensio
 - [Publishing for Edge](https://docs.microsoft.com/en-us/microsoft-edge/extensions-chromium/publish/publish-extension)
 - [Publishing for Opera addons](https://dev.opera.com/extensions/publishing-guidelines/)
 - [Publishing for Firefox](https://extensionworkshop.com/documentation/publish/submitting-an-add-on/)
+
+## Nitz
+Portals:
+https://chrome.google.com/webstore/devconsole/
+https://addons.mozilla.org/en-US/developers/
