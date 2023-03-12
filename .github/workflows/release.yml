@@ -21,6 +21,7 @@ jobs:
           echo "::set-output name=change_log::$CHANGE_LOG"
       - uses: "marvinpinto/action-automatic-releases@latest"
         name: create_release
+        id: create_release
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"
           automatic_release_tag: "latest"
