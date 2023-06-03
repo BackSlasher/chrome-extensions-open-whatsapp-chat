@@ -1,7 +1,7 @@
 {
-    "name": "__MSG_appName__",
-    "short_name": "__MSG_appShortName__",
-    "description": "__MSG_appDescription__",
+    "name": "Open Whatsapp Chat",
+    "short_name": "open-whatsapp-chat",
+    "description": "Select a phone number to start a WhatsApp chat with it",
     "homepage_url": "http://chrome.google.com/webstore",
     "version": "0.0.1",
     "manifest_version": 3,
@@ -40,6 +40,6 @@
             "24": "assets/img/24x24.png",
             "32": "assets/img/32x32.png"
         },
-        "default_title": "__MSG_appName__"
+        "default_title": "Open Whatsapp Chat"
     }
 }
