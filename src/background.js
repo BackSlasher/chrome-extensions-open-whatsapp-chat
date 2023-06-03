@@ -60,14 +60,7 @@ function setUpContextMenus() {
   });
 }
 
-const isFirefox = !chrome;
-
-if (isFirefox) {
+brow.runtime.onInstalled.addListener(() => {
   setUpContextMenus();
-  browser.contextMenus.onClicked.addListener(processClick);
-} else {
-  chrome.runtime.onInstalled.addListener(() => {
-    setUpContextMenus();
-  });
-  chrome.contextMenus.onClicked.addListener(processClick);
-}
+});
+brow.contextMenus.onClicked.addListener(processClick);
